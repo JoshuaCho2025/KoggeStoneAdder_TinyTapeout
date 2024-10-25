@@ -14,12 +14,12 @@ module tb ();
   reg clk;
   reg rst_n;
   reg ena;
-  reg [7:0] a, b;
+  reg [3:0] a, b;           // 4-bit inputs a and b
   reg [7:0] ui_in;
   wire [7:0] uo_out;
-  wire carry_out;
   wire [7:0] uio_out;
   wire [7:0] uio_oe;
+
 `ifdef GL_TEST
   wire VPWR = 1'b1;
   wire VGND = 1'b0;
@@ -32,7 +32,7 @@ module tb ();
       .VGND(VGND),
 `endif
       .ui_in  (ui_in),       // 8-bit input (concatenated a and b)
-      .uo_out (uo_out),      // 8-bit output for the sum and carry
+      .uo_out (uo_out),      // 8-bit output for the sum
       .uio_in (uio_out),     // IO path input
       .uio_out(uio_out),     // IO path output
       .uio_oe (uio_oe),      // IO enable path
@@ -41,9 +41,9 @@ module tb ();
       .rst_n  (rst_n)        // Reset (active low)
   );
 
-  // Map the 8-bit input (a and b concatenated)
+  // Concatenate a and b to form ui_in
   always @(*) begin
-      ui_in = {b[3:0], a[3:0]};  // Using only lower 4 bits of `a` and `b`
+      ui_in = {b, a};  // Concatenates 4-bit b and 4-bit a to form 8-bit ui_in
   end
 
 endmodule

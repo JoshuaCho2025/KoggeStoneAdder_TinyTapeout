@@ -13,28 +13,33 @@
 module BigCircle(output G, P, input Gi, Pi, GiPrev, PiPrev);
   
   wire e;
-  and #(1) (e, Pi, GiPrev);
-  or #(1) (G, e, Gi);
-  and #(1) (P, Pi, PiPrev);
+  assign e = Pi & GiPrev; 
+  assign G = e | Gi; 
+  assign P = Pi & PiPrev; 
+  
+  //and #(1) (e, Pi, GiPrev);
+  //or #(1) (G, e, Gi);
+  //and #(1) (P, Pi, PiPrev);
   
 endmodule
 
 module SmallCircle(output Ci, input Gi);
-  
-  buf #(1) (Ci, Gi);
+  assign Ci = Gi; 
+  //buf #(1) (Ci, Gi);
   
 endmodule
 
 module Square(output G, P, input Ai, Bi);
-  
-  and #(1) (G, Ai, Bi);
-  xor #(2) (P, Ai, Bi);
+  assign G = Ai & Bi; 
+  assign P = Ai ^ Bi; 
+  //and #(1) (G, Ai, Bi);
+  //xor #(2) (P, Ai, Bi);
   
 endmodule
 
 module Triangle(output Si, input Pi, CiPrev);
-  
-  xor #(2) (Si, Pi, CiPrev);
+  assign Si = Pi ^ CiPrev; 
+  //xor #(2) (Si, Pi, CiPrev);
   
 endmodule
 

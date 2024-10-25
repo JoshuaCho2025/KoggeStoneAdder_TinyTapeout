@@ -1,9 +1,6 @@
 `default_nettype none
 `timescale 1ns / 1ps
 
-/* This testbench instantiates the 8-bit Kogge-Stone adder module 
-   and provides convenient wires for driving and testing with cocotb.
-*/
 module tb ();
 
   // Dump the signals to a VCD file. You can view it with gtkwave.
@@ -18,8 +15,8 @@ module tb ();
   reg rst_n;
   reg ena;
   reg [7:0] a, b;
-  reg [7:0] uio_in;
-  wire [7:0] sum;
+  reg [7:0] ui_in;
+  wire [7:0] uo_out;
   wire carry_out;
   wire [7:0] uio_out;
   wire [7:0] uio_oe;
@@ -30,21 +27,23 @@ module tb ();
 
   // Instantiate the 8-bit Kogge-Stone adder module:
   tt_um_koggestone_adder8 user_project (
-
-      // Include power ports for the Gate Level test:
 `ifdef GL_TEST
       .VPWR(VPWR),
       .VGND(VGND),
 `endif
-
-      .ui_in  ({b, a}),          // 8-bit input (concatenated a and b)
-      .uo_out (sum),             // 8-bit sum output
-      .uio_in (uio_in),          // IOs: Input path
-      .uio_out(uio_out),         // IOs: Output path
-      .uio_oe (uio_oe),          // IOs: Enable path (active high: 0=input, 1=output)
-      .ena    (ena),             // Enable - goes high when design is selected
-      .clk    (clk),             // Clock
-      .rst_n  (rst_n)            // Active-low reset
+      .ui_in  (ui_in),       // 8-bit input (concatenated a and b)
+      .uo_out (uo_out),      // 8-bit output for the sum and carry
+      .uio_in (uio_out),     // IO path input
+      .uio_out(uio_out),     // IO path output
+      .uio_oe (uio_oe),      // IO enable path
+      .ena    (ena),         // Enable signal
+      .clk    (clk),         // Clock signal
+      .rst_n  (rst_n)        // Reset (active low)
   );
+
+  // Map the 8-bit input (a and b concatenated)
+  always @(*) begin
+      ui_in = {b[3:0], a[3:0]};  // Using only lower 4 bits of `a` and `b`
+  end
 
 endmodule

@@ -52,7 +52,7 @@ module tt_um_koggestone_adder8(
 
   wire [7:0] a = ui_in;
   wire [7:0] b = uio_in; 
-  wire carry_out;
+  wire cout;
   wire [7:0] sum = uo_out; 
 
   //default values

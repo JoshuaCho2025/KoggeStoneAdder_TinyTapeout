@@ -53,7 +53,7 @@ module tt_um_koggestone_adder8(
   wire [7:0] a = ui_in;
   wire [7:0] b = uio_in; 
   wire cout;
-  wire [7:0] sum = uo_out; 
+  wire [7:0] sum; 
 
   //default values
   assign uio_oe = 8'b00000000;
@@ -92,6 +92,8 @@ module tt_um_koggestone_adder8(
   
   // generate cout
   buf #(1) (cout, c[7]);
+
+  assign uo_out = sum; 
   
 endmodule
 

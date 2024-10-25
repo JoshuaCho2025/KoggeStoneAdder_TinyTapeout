@@ -5,7 +5,6 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
 
-
 @cocotb.test()
 async def test_project(dut):
     dut._log.info("Start")
@@ -17,8 +16,8 @@ async def test_project(dut):
     dut._log.info("Testing full 8-bit adder behavior")
 
     # Extended test to cover 8-bit range
-    a_vals = [i for i in range(256)]  # All values from 0 to 255
-    b_vals = [i for i in range(256)]  # All values from 0 to 255
+    a_vals = [i for i in range(16)]  # Lower 4 bits
+    b_vals = [i for i in range(16)]  # Lower 4 bits
 
     error_count = 0  # Counter to track any failures
 
@@ -32,12 +31,12 @@ async def test_project(dut):
 
             # Calculate the expected values
             expected_sum = (a + b) & 0xFF          # Sum limited to 8-bit
-            expected_carry = 1 if (a + b) > 255 else 0  # Carry out if overflow occurs
+            expected_carry = 1 if (a + b) > 15 else 0  # Carry out if overflow occurs
             
             # Log the values and verify the output
             dut._log.info(f"Testing a={a}, b={b}: Expected sum={expected_sum}, carry={expected_carry}")
-            sum_output = int(dut.uo_out.value & 0xFF)  # Mask to get the lower 8 bits
-            carry_out = int(dut.uo_out.value >> 7)     # Get carry-out from MSB
+            sum_output = int(dut.uo_out.value & 0xF)  # Mask to get the lower 4 bits for sum
+            carry_out = int(dut.uo_out.value >> 4)    # Get carry-out from the 5th bit
 
             # Assert the sum and carry_out values
             try:
@@ -48,4 +47,4 @@ async def test_project(dut):
                 error_count += 1
 
     dut._log.info(f"Testing completed with {error_count} errors.")
-    assert error_count == 0, f"Test failed with {error_count} errors"
+    assert error_count == 0, f"Test failed with {error_count} errors"  

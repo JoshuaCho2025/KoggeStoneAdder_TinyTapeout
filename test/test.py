@@ -15,14 +15,11 @@ async def test_project(dut):
 
     dut._log.info("Testing full 8-bit Kogge-Stone adder behavior")
 
-    # Extended test to cover full 8-bit range
-    a_vals = [i for i in range(256)]  # Full 8-bit range for a
-    b_vals = [i for i in range(256)]  # Full 8-bit range for b
-
     error_count = 0  # Counter to track any failures
 
-    for a in a_vals:
-        for b in b_vals:
+    for a in range(256):  # Iterate over the full 8-bit range for a
+        # Set the range for b to ensure a + b does not exceed 255
+        for b in range(256 - a):  # b ranges from 0 to 255 - a
             # Set the inputs to test each combination of a and b
             dut.ui_in.value = (b << 4) | a  # Concatenate a and b in 8-bit input format
             

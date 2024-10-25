@@ -36,10 +36,10 @@ pinout:
   uo[1]: "sum[1]"
   uo[2]: "sum[2]"
   uo[3]: "sum[3]"
-  uo[4]: "carry_out"
-  uo[5]: ""
-  uo[6]: ""
-  uo[7]: ""
+  uo[4]: "sum[4]"
+  uo[5]: "sum[5]"
+  uo[6]: "sum[6]"
+  uo[7]: "sum[7]"
 
   # Bidirectional pins
   uio[0]: "a[0]"

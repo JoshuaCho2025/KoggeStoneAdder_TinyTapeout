@@ -25,7 +25,7 @@ async def test_project(dut):
             dut.b.value = b_vals[j]
             
             # Wait for one clock cycle to see the output values
-            await ClockCycles(dut.clk, 10)
+            await ClockCycles(dut.clk, 20)
           
             # The following assersion is just an example of how to check the output values.
             # Change it to match the actual expected output of your module:

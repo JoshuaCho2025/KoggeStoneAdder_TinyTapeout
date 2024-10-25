@@ -24,7 +24,7 @@ async def test_project(dut):
             dut.a.value = a  
             dut.b.value = b
             # Wait for a few clock cycles to settle
-            await ClockCycles(dut.clk, 1)
+            await ClockCycles(dut.clk, 10)
 
             # Calculate the expected sum
             expected_sum = (a + b) & 0xFF  # Sum limited to 8-bit

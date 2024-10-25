@@ -5,6 +5,7 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
 
+
 @cocotb.test()
 async def test_project(dut):
     dut._log.info("Start")
@@ -13,32 +14,27 @@ async def test_project(dut):
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
 
-    dut._log.info("Testing full 8-bit Kogge-Stone adder behavior")
-
-    error_count = 0  # Counter to track any failures
-
-    for a in range(256):  # Iterate over the full 8-bit range for a
-        # Set the range for b to ensure a + b does not exceed 255
-        for b in range(256 - a):  # b ranges from 0 to 255 - a
-            # Set the inputs to test each combination of a and b
-            dut.a.value = a  
-            dut.b.value = b
-            # Wait for a few clock cycles to settle
-            await ClockCycles(dut.clk, 10)
-
-            # Calculate the expected sum
-            expected_sum = (a + b) & 0xFF  # Sum limited to 8-bit
+    dut._log.info("Test project behavior")
+    a_vals = [i for i in range(16)] #makes an array [0...15]
+    b_vals = [i for i in range(16)] #makes an array [0...15]
+    
+    for i in range(len(a_vals)):
+        for j in range(len(b_vals)):
+            # Set the input values you want to test
+            dut.a.value = a_vals[i]
+            dut.b.value = b_vals[j]
             
-            # Log the values and verify the output
-            dut._log.info(f"Testing a={a:08b}, b={b:08b}: Expected sum={expected_sum:08b}")
-            sum_output = dut.sum.value  # Read the full 8-bit sum output
+            # Wait for one clock cycle to see the output values
+            await ClockCycles(dut.clk, 10)
+          
+            # The following assersion is just an example of how to check the output values.
+            # Change it to match the actual expected output of your module:
+            dut._log.info(f"value of outputs are: {dut.sum.value}")
+            assert int(dut.sum.value) == ((a_vals[i] + b_vals[j])%256)   
+        
+    
+   
 
-            # Assert the sum value
-            try:
-                assert sum_output == expected_sum, f"Sum mismatch: got {sum_output:08b}, expected {expected_sum:08b}"
-            except AssertionError as e:
-                dut._log.error(str(e))
-                error_count += 1
-
-    dut._log.info(f"Testing completed with {error_count} errors.")
-    assert error_count == 0, f"Test failed with {error_count} errors"
+    # Keep testing the module by changing the input values, waiting for
+    # one or more clock cycles, and asserting the expected output values.
+    

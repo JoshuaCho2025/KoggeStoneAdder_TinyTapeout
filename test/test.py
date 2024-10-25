@@ -31,7 +31,7 @@ async def test_project(dut):
             
             # Log the values and verify the output
             dut._log.info(f"Testing a={a:08b}, b={b:08b}: Expected sum={expected_sum:08b}")
-            sum_output = int(dut.sum.value)  # Read the full 8-bit sum output
+            sum_output = dut.sum.value  # Read the full 8-bit sum output
 
             # Assert the sum value
             try:

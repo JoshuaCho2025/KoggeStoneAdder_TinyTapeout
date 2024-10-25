@@ -21,8 +21,8 @@ async def test_project(dut):
         # Set the range for b to ensure a + b does not exceed 255
         for b in range(256 - a):  # b ranges from 0 to 255 - a
             # Set the inputs to test each combination of a and b
-            dut.ui_in.value = (b << 4) | a  # Concatenate a and b in 8-bit input format
-            
+            dut.ui_in.value = a  
+            dut.uio_in.value = b
             # Wait for a few clock cycles to settle
             await ClockCycles(dut.clk, 1)
 

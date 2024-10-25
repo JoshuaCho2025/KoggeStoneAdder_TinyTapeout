@@ -18,7 +18,6 @@ module tt_um_koggestone_adder8 (
 
   wire [7:0] a, b;
   wire [7:0] sum;
-  wire carry_out;
   
   assign a = ui_in[3:0];
   assign b = ui_in[7:4];
@@ -74,13 +73,12 @@ module tt_um_koggestone_adder8 (
   assign c[5] = g3_5;                    // Carry for 5th bit
   assign c[6] = g3_6;                    // Carry for 6th bit
   assign c[7] = g3_7;                    // Carry for 7th bit
-  assign carry_out = g3_7;               // Carry-out for 8th bit
 
   // Sum computation
   assign sum = p ^ c;                               // XOR of propagate and carry
 
-  assign uo_out = sum;   // Output the 8-bit sum
-  assign uo_out[7] = carry_out; 
+  assign uo_out = sum;   // Output the 8-bit sum only
   assign uio_out = 8'b00000000;
   assign uio_oe = 8'b00000000;
+
 endmodule

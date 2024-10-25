@@ -13,11 +13,11 @@ async def test_project(dut):
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
 
-    dut._log.info("Testing full 8-bit adder behavior")
+    dut._log.info("Testing full 8-bit Kogge-Stone adder behavior")
 
-    # Extended test to cover 8-bit range
-    a_vals = [i for i in range(16)]  # Lower 4 bits
-    b_vals = [i for i in range(16)]  # Lower 4 bits
+    # Extended test to cover full 8-bit range
+    a_vals = [i for i in range(256)]  # Full 8-bit range for a
+    b_vals = [i for i in range(256)]  # Full 8-bit range for b
 
     error_count = 0  # Counter to track any failures
 
@@ -26,25 +26,22 @@ async def test_project(dut):
             # Set the inputs to test each combination of a and b
             dut.ui_in.value = (b << 4) | a  # Concatenate a and b in 8-bit input format
             
-            # Wait for 10 clock cycles
-            await ClockCycles(dut.clk, 10)
+            # Wait for a few clock cycles to settle
+            await ClockCycles(dut.clk, 1)
 
-            # Calculate the expected values
-            expected_sum = (a + b) & 0xFF          # Sum limited to 8-bit
-            expected_carry = 1 if (a + b) > 15 else 0  # Carry out if overflow occurs
+            # Calculate the expected sum
+            expected_sum = (a + b) & 0xFF  # Sum limited to 8-bit
             
             # Log the values and verify the output
-            dut._log.info(f"Testing a={a}, b={b}: Expected sum={expected_sum}, carry={expected_carry}")
-            sum_output = int(dut.uo_out.value & 0xF)  # Mask to get the lower 4 bits for sum
-            carry_out = int(dut.uo_out.value >> 4)    # Get carry-out from the 5th bit
+            dut._log.info(f"Testing a={a:08b}, b={b:08b}: Expected sum={expected_sum:08b}")
+            sum_output = int(dut.uo_out.value)  # Read the full 8-bit sum output
 
-            # Assert the sum and carry_out values
+            # Assert the sum value
             try:
-                assert sum_output == expected_sum, f"Sum mismatch: got {sum_output}, expected {expected_sum}"
-                assert carry_out == expected_carry, f"Carry mismatch: got {carry_out}, expected {expected_carry}"
+                assert sum_output == expected_sum, f"Sum mismatch: got {sum_output:08b}, expected {expected_sum:08b}"
             except AssertionError as e:
                 dut._log.error(str(e))
                 error_count += 1
 
     dut._log.info(f"Testing completed with {error_count} errors.")
-    assert error_count == 0, f"Test failed with {error_count} errors"  
+    assert error_count == 0, f"Test failed with {error_count} errors"

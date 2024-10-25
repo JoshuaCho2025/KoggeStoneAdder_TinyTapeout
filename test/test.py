@@ -14,27 +14,38 @@ async def test_project(dut):
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
 
-    dut._log.info("Test project behavior")
-    a_vals = [i for i in range(16)] #makes an array [0...15]
-    b_vals = [i for i in range(16)] #makes an array [0...15]
-    
-    for i in range(len(a_vals)):
-        for j in range(len(b_vals)):
-            # Set the input values you want to test
-            dut.a.value = a_vals[i]
-            dut.b.value = b_vals[j]
-            
-            # Wait for one clock cycle to see the output values
-            await ClockCycles(dut.clk, 10)
-          
-            # The following assersion is just an example of how to check the output values.
-            # Change it to match the actual expected output of your module:
-            dut._log.info(f"value of outputs are: {dut.sum.value} and {dut.carry_out.value}.")
-            assert int(dut.sum.value) == ((a_vals[i] + b_vals[j])%16) and int(dut.carry_out.value) == ((a_vals[i] + b_vals[j]) >= 16)  
-        
-    
-   
+    dut._log.info("Testing full 8-bit adder behavior")
 
-    # Keep testing the module by changing the input values, waiting for
-    # one or more clock cycles, and asserting the expected output values.
-    
+    # Extended test to cover 8-bit range
+    a_vals = [i for i in range(256)]  # All values from 0 to 255
+    b_vals = [i for i in range(256)]  # All values from 0 to 255
+
+    error_count = 0  # Counter to track any failures
+
+    for a in a_vals:
+        for b in b_vals:
+            # Set the inputs to test each combination of a and b
+            dut.ui_in.value = (b << 4) | a  # Concatenate a and b in 8-bit input format
+            
+            # Wait for 10 clock cycles
+            await ClockCycles(dut.clk, 10)
+
+            # Calculate the expected values
+            expected_sum = (a + b) & 0xFF          # Sum limited to 8-bit
+            expected_carry = 1 if (a + b) > 255 else 0  # Carry out if overflow occurs
+            
+            # Log the values and verify the output
+            dut._log.info(f"Testing a={a}, b={b}: Expected sum={expected_sum}, carry={expected_carry}")
+            sum_output = int(dut.uo_out.value & 0xFF)  # Mask to get the lower 8 bits
+            carry_out = int(dut.uo_out.value >> 7)     # Get carry-out from MSB
+
+            # Assert the sum and carry_out values
+            try:
+                assert sum_output == expected_sum, f"Sum mismatch: got {sum_output}, expected {expected_sum}"
+                assert carry_out == expected_carry, f"Carry mismatch: got {carry_out}, expected {expected_carry}"
+            except AssertionError as e:
+                dut._log.error(str(e))
+                error_count += 1
+
+    dut._log.info(f"Testing completed with {error_count} errors.")
+    assert error_count == 0, f"Test failed with {error_count} errors"

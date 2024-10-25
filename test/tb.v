@@ -14,8 +14,8 @@ module tb ();
   reg clk;
   reg rst_n;
   reg ena;
-  reg [7:0] a, b;           // 4-bit inputs a and b
-  reg [7:0] ui_in;
+  reg [7:0] b;           
+  reg [7:0] a;
   wire [7:0] sum;
   wire [7:0] uio_out;
   wire [7:0] uio_oe;
@@ -31,19 +31,15 @@ module tb ();
       .VPWR(VPWR),
       .VGND(VGND),
 `endif
-      .ui_in  (ui_in),       // 8-bit input (concatenated a and b)
-      .uo_out (uo_out),      // 8-bit output for the sum
-      .uio_in (uio_out),     // IO path input
-      .uio_out(uio_out),     // IO path output
-      .uio_oe (uio_oe),      // IO enable path
-      .ena    (ena),         // Enable signal
-      .clk    (clk),         // Clock signal
-      .rst_n  (rst_n)        // Reset (active low)
+    .ui_in  (a),       // 8-bit input (concatenated a and b)
+    .uo_out (sum),      // 8-bit output for the sum
+    .uio_in (b),     // IO path input
+    .uio_out(uio_out),     // IO path output
+    .uio_oe (uio_oe),      // IO enable path
+    .ena    (ena),         // Enable signal
+    .clk    (clk),         // Clock signal
+    .rst_n  (rst_n)        // Reset (active low)
   );
 
-  // Concatenate a and b to form ui_in
-  always @(*) begin
-      ui_in = {b, a};  // Concatenates 4-bit b and 4-bit a to form 8-bit ui_in
-  end
-
-endmodule
+ 
+  endmodule

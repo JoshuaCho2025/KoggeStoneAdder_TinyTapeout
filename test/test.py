@@ -33,4 +33,8 @@ async def test_project(dut):
                 dut._log.info(f"value of outputs are: {dut.sum.value}")
                 assert int(dut.sum.value) == ((a_vals[i] + b_vals[j])%256) if   
             else: 
+                # Wait for one clock cycle to see the output values
+                dut.a.value = a_vals[i]
+                dut.b.value = b_vals[j]
+                await ClockCycles(dut.clk, 20)
                 continue

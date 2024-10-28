@@ -20,7 +20,7 @@ async def test_project(dut):
     
     for i in (len(a_vals)):
         for j in (len(b_vals)):
-            if a + b > max_val:
+            if a_vals[i] + b_vals[j] > max_val:
                 continue  # Skip combinations that exceed 255
             
             # Set the input values

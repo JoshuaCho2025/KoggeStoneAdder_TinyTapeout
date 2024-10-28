@@ -97,4 +97,7 @@ module tt_um_koggestone_adder8(
   Triangle tr7(sum[7], p[7], c[6]);
 
   buf (cout, c[7]);
+
+  assign uo_out = sum; 
+  
 endmodule

@@ -54,6 +54,7 @@ module tt_um_koggestone_adder8(
   wire cin = 1'b0;
   wire [7:0] c;
   wire [7:0] g, p;
+  
   Square sq[7:0](g, p, a, b);
 
   wire [14:8] g1, p1;
@@ -99,5 +100,7 @@ module tt_um_koggestone_adder8(
   buf (cout, c[7]);
 
   assign uo_out = sum; 
+  assign uio_out = 8'b00000000;
+  assign uio_oe = 8'b00000000;
   
 endmodule

@@ -46,9 +46,9 @@ module tt_um_koggestone_adder8(
   //default values
   assign uio_oe = 8'b00000000;
   assign uio_out = 8'b00000000;
-  assign ena = 1'b0; 
-  assign clk = 1'b0; 
-  assign rst_n = 1'b0; 
+  //assign ena = 1'b0; 
+  //assign clk = 1'b0; 
+  //assign rst_n = 1'b0; 
 
   
   wire cin = 1'b0;

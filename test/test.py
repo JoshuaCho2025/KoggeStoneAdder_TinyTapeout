@@ -18,7 +18,7 @@ async def test_project(dut):
     a_vals = [i for i in range(256)]  # a can range from 0 to 255
     b_vals = [j for j in range(256)]  # b can also range from 0 to 255
     
-    for i in range(len(a_vals))
+    for i in range(len(a_vals)):
         for j in range(len(b_vals)):
             if a_vals[i] + b_vals[j] > max_val:
                 continue  # Skip combinations that exceed 255

@@ -15,21 +15,22 @@ async def test_project(dut):
     cocotb.start_soon(clock.start())
 
     dut._log.info("Test project behavior")
+    a_vals = [i for i in range(256)] #makes an array [0...255]
+    b_vals = [i for i in range(256)] #makes an array [0...255]
     
-    # Generate test values for a and b
-    a_vals = range(256)  # Values from 0 to 255
-    b_vals = range(256)  # Values from 0 to 255
-    
-    for a in a_vals:
-        for b in b_vals:
-            if a + b <= 255:  # Only test pairs where the sum is <= 255
-                # Set the input values you want to test
-                dut.a.value = a
-                dut.b.value = b
+    for i in range(len(a_vals)):
+        for j in range(len(b_vals)):
+            # Set the input values you want to test
+            if (a_vals[i] + b_vals[j]) < 256:
+                dut.a.value = a_vals[i]
+                dut.b.value = b_vals[j]
                 
                 # Wait for one clock cycle to see the output values
-                await ClockCycles(dut.clk, 1)
-
-                # Log the output and check if the sum is correct
-                dut._log.info(f"a: {a}, b: {b}, sum: {dut.sum.value}")
-                assert int(dut.sum.value) == (a + b) % 256
+                await ClockCycles(dut.clk, 20)
+                  
+                # The following assersion is just an example of how to check the output values.
+                # Change it to match the actual expected output of your module:
+                dut._log.info(f"value of outputs are: {dut.sum.value}")
+                assert int(dut.sum.value) == ((a_vals[i] + b_vals[j])%256) if   
+            else: 
+                continue

@@ -15,7 +15,7 @@ async def test_project(dut):
     cocotb.start_soon(clock.start())
 
     dut._log.info("Test project behavior")
-    a_vals = [i for i in range(16)] #makes an array [0...15]
+    a_vals = [i for i in range(150)] #makes an array [0...15]
     b_vals = [i for i in range(16)] #makes an array [0...15]
     
     for i in range(len(a_vals)):

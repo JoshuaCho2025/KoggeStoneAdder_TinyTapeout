@@ -22,7 +22,8 @@ In the project.v file, there are 5 different modules: BigCircle, SmallCircle, Sq
 Shown in figure 1 below is the block diagram for the flow for the KoggeStone Adder
 
 ![image](https://github.com/user-attachments/assets/04d402c8-4903-438c-b558-5fbaee71b3ab)
-                                                  Figure 1: KoggeStone Adder Block Diagram
+                                                  
+                                              Figure 1: KoggeStone Adder Block Diagram
 
 
 ### BigCirle Module

@@ -6,7 +6,7 @@ sections.
 You can also include images in this folder and reference them in the markdown. Each image must be less than
 512 kb in size, and the combined size of all images must be less than 1 MB.
 -->
-### 8-bit KoggeStone Adder
+## 8-bit KoggeStone Adder
 Author: Niles Villaverde, Joshua Cho
 Language: Verilog
 
@@ -19,7 +19,7 @@ result of the adder.
 
 In the project.v file, there are 5 different modules: BigCircle, SmallCircle, Square, Triangle, and tt_um_koggestone_adder8.
 
-# BigCirle Module
+### BigCirle Module
 The BigCircle module represents the carry generator for the KoggeStone Adder. It calculates the generated and 
 propagated signal in each bit stage in the Adder. In comparison to carry-ripple adders, the KoggeStone 
 adder allows for the carry information to propagate efficiently to multiple bit positions. This allows 
@@ -31,17 +31,17 @@ the bit position to reflect if the carry is generated from this bit position or 
 previous. Then calculates the propagation signal to decide whether if a carry can be passed through this
 position. 
 
-# SmallCircle Module
+### SmallCircle Module
 The SmallCircle module passes the carry in signal and generated carry signal to the next position
 
-# Square Module
+### Square Module
 The Square module calculates the current generate and propagate signal by ANDing the inputs A and B as
 well as XORing the inputs A and B respectively. 
 
-# Triangle Module
+### Triangle Module
 The Triangle module calcualtes the sum bit by XORing the propagate bit with the previous carry-in bit.
 
-# tt_um_koggestone_adder8 Module
+### tt_um_koggestone_adder8 Module
 The tt_um_koggestone_adder8 module takes in two 8-bit inputs, ui_in and uio_in. The module also outputs
 an 8-bit output, uo_out. 
 **Input Signals:**

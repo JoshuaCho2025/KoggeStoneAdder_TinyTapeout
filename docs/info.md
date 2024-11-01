@@ -19,6 +19,12 @@ result of the adder.
 
 In the project.v file, there are 5 different modules: BigCircle, SmallCircle, Square, Triangle, and tt_um_koggestone_adder8.
 
+Shown in figure 1 below is the block diagram for the flow for the KoggeStone Adder
+
+![image](https://github.com/user-attachments/assets/04d402c8-4903-438c-b558-5fbaee71b3ab)
+                                                  Figure 1: KoggeStone Adder Block Diagram
+
+
 ### BigCirle Module
 The BigCircle module represents the carry generator for the KoggeStone Adder. It calculates the generated and 
 propagated signal in each bit stage in the Adder. In comparison to carry-ripple adders, the KoggeStone 
